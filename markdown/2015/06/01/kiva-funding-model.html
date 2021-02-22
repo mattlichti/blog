@@ -77,7 +77,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      2 min read
+      3 min read
     
 </span></p>
 
@@ -102,6 +102,7 @@ window.onload = wrap_img;
 <li class="toc-entry toc-h3"><a href="#pipeline">Pipeline:</a></li>
 </ul>
 </li>
+<li class="toc-entry toc-h2"><a href="#feature-engineering">Feature Engineering:</a></li>
 <li class="toc-entry toc-h2"><a href="#modeling">Modeling:</a>
 <ul>
 <li class="toc-entry toc-h3"><a href="#running-the-model">Running the model</a></li>
@@ -114,22 +115,31 @@ window.onload = wrap_img;
 <a class="anchor" href="#how-to-get-loans-funded-on-kiva" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://mattlichti.github.io/kiva-funding/">How to get loans funded on kiva</a>
 </h1>
 
+<p>This post was originally written in 2015, and was reformatedd for my fastpages blog in 2021</p>
+
 <p>This project is an analysis of what features make microfinance loans on <a href="kiva.org">kiva.org</a> more likely to get funded. The full analysis and explanation of my process is <a href="http://mattlichti.github.io/kiva-funding/">here</a></p>
 
 <h2 id="motivation">
 <a class="anchor" href="#motivation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation:</h2>
 
-<p>There are over 2 million small time lenders on kiva who have funded over 880,000 microfinance loans since 2005. The loans are originally made by 296 different microfinance organizations who use kiva to raise money to backfill some of their loans. Lenders can view the loans on the website and lend as little as $25 to any of the borrowers they chose. Loans usually have a 30 day expiration policy, which means that loans that are not fully funded in that time are refunded and the microfinance organization does not receive any money. Because of this, it is important for the microfinance organizations to understand the characteristics that make loans more likely to get funded.</p>
+<p>This project is an analysis of what features make microfinance loans on kiva.org more likely to get funded. There are over 2 million small time lenders on kiva who have funded over 880,000 microfinance loans totaling $712 million since 2005. The loans are originally made by 296 different microfinance organizations in 85 countries who use kiva to raise money to backfill some of their loans. Lenders can view the loans on the website and lend as little as $25 to any of the borrowers they chose.</p>
+
+<p>Since January 2012, kiva has usually had a 30 day expiration policy. If a loan is not fully funded in that time, the lenders are refunded and the microfinance organization does not receive any money. This is similar to the funding model used on kickstarter where projects do not receive any money unless they are fully funded. Because of the risk of loan expiration, it is important for the microfinance organizations to understand the characteristics that make loans more likely to get funded. The analysis could also help kiva.org increase the total number of loans getting funded, which would help more struggling entrepreneurs around the globe get the capital they need to build their businesses</p>
 
 <h2 id="data">
 <a class="anchor" href="#data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data:</h2>
 
-<p>Kiva makes their loan data available through their <a href="http://build.kiva.org/">api</a>. They also periodically make <a href="http://build.kiva.org/docs/data/snapshots">downloadable snapshots</a> of the data. I most recently used the May 18 2015 json snapshot for this analysis. The loan data is in a 1 GB zip file that is 5 GB when unzipped.</p>
+<p>Kiva makes their loan data available through their api. They also periodically make downloadable snapshots of the data. I most recently used the May 18 2015 json snapshot for this analysis. The loan data is in a 1 GB zip file that is 5 GB when unzipped.</p>
 
 <h3 id="pipeline">
 <a class="anchor" href="#pipeline" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pipeline:</h3>
 
 <p><a href="https://github.com/mattlichti/kiva-fundraising-success/blob/master/data_pipeline.py">data_pipeline.py</a> is used for processing the raw kiva loan data. It extracts the relevant data, performs the feature engineering, and then stores it all in a postgres SQL database. To run the pipeline, unzip the loans folder containing around 1800 json files that each have the data from 500 loans. Then setup a postgres database and run pipeline.py in the terminal the loans folder location and sql information as command line arguments. The most important part of the process is feature engineering. The features include anything that a potential borrower sees when viewing a loan on kiva org that they can use to decide whether or not to loan to a particular individual.</p>
+
+<h2 id="feature-engineering">
+<a class="anchor" href="#feature-engineering" aria-hidden="true"><span class="octicon octicon-link"></span></a>Feature Engineering:</h2>
+
+<p>The most important part of the process is feature engineering. The features include anything that a potential borrower sees when viewing a loan on kiva org that they can use to decide whether or not to loan to a particular individual. A typical view of a loan from the kiva website is pictured below with some of the important features highlighted.</p>
 
 <h2 id="modeling">
 <a class="anchor" href="#modeling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modeling:</h2>

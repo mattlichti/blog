@@ -9,7 +9,9 @@ title: How to get loans funded on kiva
 
 # [How to get loans funded on kiva](http://mattlichti.github.io/kiva-funding/)
 
-This post was originally written in 2015, and was reformatedd for my fastpages blog in 2021 
+This post was originally written in 2015 and was reformatted for my fastpages blog in 2021.
+
+![Title Slide](https://github.com/mattlichti/kiva-fundraising-success/blob/master/img/title.jpg?raw=true) 
 
 This project is an analysis of what features make microfinance loans on [kiva.org](kiva.org) more likely to get funded. The full analysis and explanation of my process is [here](http://mattlichti.github.io/kiva-funding/)
 

@@ -58,6 +58,18 @@ When there are few loans on the site, almost all of the loans get funded. When t
 ## Modeling
 [build_model.py](https://github.com/mattlichti/kiva-fundraising-success/blob/master/build_model.py) is used to train the model, predict which loans have a higher risk of expiring, and determine which features are most important in predicting loan success. The model converts the categorical features into boolean dummy variables, and tokenizes, lemmatizes, and performs TF-IDF on the text. I used a random forest model. The classes were unbalanced with a much higher number of funded loans than expired loans, so I heavily weighted the expired loans in order to increase recall of expired loans at the expense of precision. The model can output a confusion matrix and a list of feature importance which could be used as recommendations on how to improve their odds of getting their loans funded.  
 
+### Weighted Random Forest
+
+I used a random forest model. The classes were unbalanced with a much higher number of funded loans than expired loans, so I heavily weighted the expired loans in order to increase recall of expired loans at the expense of precision. I also tried logistic regression and SVM but they have not performed quite as well.
+
+### Model Tuning
+
+I had to tune the model quite a bit to avoid overfitting. I used a grid search to determine optimal values for the weight of the unbalanced class, minimum number of samples to split each node, and the minimum number of samples on each newly created leaf. I used cross validation to determine which set of parameter values had the best combination of recall and precision on the test sets.
+
+### Out of Sample Error
+
+The model will still be somewhat biased since the test sets were from the same time period as the training sets and may net work as well data from a future time period. Because of this, I also tried training the model on one time period (May - November 2014) and testing it on a later time period (January - March 2015). The one month gap is necessary because someone predicting current loans would not know which loans posted in the last month will expire since they have 30 days to get funded. The model does not perform as well with different time periods which shows there are time related variables that aren't captured by the model. 
+
 ### Running the model
 [run_model.py](https://github.com/mattlichti/kiva-fundraising-success/blob/master/run_model.py) is used to load the relevant data from the postgres sql database and run the model on that data. It can be run from the command line like data_pipeline.py.
 
@@ -65,5 +77,5 @@ When there are few loans on the site, almost all of the loans get funded. When t
 [plots.py](https://github.com/mattlichti/kiva-fundraising-success/blob/master/plots.py) is used to make plots of the feature importance of the most important features in the random forest model, as well as plot the expiration rate based on a variety of features and the expiration rate over time.
 
 ## Results
-[Feature Importance](https://github.com/mattlichti/kiva-fundraising-success/blob/master/plots/feature_importance.png?raw=true)
+![Feature Importance](https://github.com/mattlichti/kiva-fundraising-success/blob/master/plots/feature_importance.png?raw=true)
 Lenders on kiva show a strong preference for loans with a shorter repayment term as well as loans to women. Loans for larger amounts of money are not surprisingly more difficult to fund since they require more lenders to fully fund. Lenders also prefer lending to certain countries, especially African countries and countries with fewer loans available on kiva. Loans to countries with lots of loans available like El Salvador (SV) and Colombia (CO) are at greater risk for loan expiration. Lenders also have strong preferences for different loan uses with loans for personal housing much more likely to expire than loans for education or starting a business.

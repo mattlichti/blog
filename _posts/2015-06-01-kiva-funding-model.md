@@ -31,7 +31,7 @@ Kiva makes their loan data available through their api. They also periodically m
 
 The most important part of the process is feature engineering. The features include anything that a potential borrower sees when viewing a loan on kiva org that they can use to decide whether or not to loan to a particular individual. A typical view of a loan from the kiva website is pictured below with some of the important features highlighted.
 
-![Feature Engineering]("https://github.com/mattlichti/kiva-fundraising-success/blob/master/img/feature_engineering.jpg?raw=true")
+![Feature Engineering](https://github.com/mattlichti/kiva-fundraising-success/blob/master/img/feature_engineering.jpg?raw=true)
 
 ### Continuous features
 * loan amount
@@ -48,6 +48,11 @@ The most important part of the process is feature engineering. The features incl
 * currency loss - whether the lender is liable for losses due to currency fluctuations
 * anonymous - whether the borrower has their name and photo on the website or chooses to remain anonymous.
 
+### Transforming the text into features
+I used the one sentence description of how the loan will be used to engineer features out of the most commonly used terms. The length of this text as well as the length of the larger description text were also useful features.
+
+### Competing loans
+In addition to the features that impact demand for particular loans, the supply of loans on the site can effect the chances of each loan getting funded. I used SQL to calculate the number of other loans on kiva at the time each loan was posted by comparing the timestamp of when each loan was posted to the timestamps for when other loans were posted and funded or expired.
 
 
 ## Modeling:

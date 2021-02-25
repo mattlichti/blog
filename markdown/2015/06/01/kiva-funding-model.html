@@ -77,7 +77,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      3 min read
+      4 min read
     
 </span></p>
 
@@ -102,7 +102,12 @@ window.onload = wrap_img;
 <li class="toc-entry toc-h3"><a href="#pipeline">Pipeline:</a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h2"><a href="#feature-engineering">Feature Engineering:</a></li>
+<li class="toc-entry toc-h2"><a href="#feature-engineering">Feature Engineering:</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#continuous-features">Continuous features</a></li>
+<li class="toc-entry toc-h3"><a href="#categorical-features">Categorical features</a></li>
+</ul>
+</li>
 <li class="toc-entry toc-h2"><a href="#modeling">Modeling:</a>
 <ul>
 <li class="toc-entry toc-h3"><a href="#running-the-model">Running the model</a></li>
@@ -115,16 +120,14 @@ window.onload = wrap_img;
 <a class="anchor" href="#how-to-get-loans-funded-on-kiva" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://mattlichti.github.io/kiva-funding/">How to get loans funded on kiva</a>
 </h1>
 
-<p>This post was originally written in 2015 and was reformatted for my fastpages blog in 2021.</p>
+<p>This post was originally written in 2015 and was reformatted for my fastpages blog in 2021. The full analysis and explanation of my process is <a href="http://mattlichti.github.io/kiva-funding/">here</a></p>
 
 <p><img src="https://github.com/mattlichti/kiva-fundraising-success/blob/master/img/title.jpg?raw=true" alt="Title Slide"></p>
-
-<p>This project is an analysis of what features make microfinance loans on <a href="kiva.org">kiva.org</a> more likely to get funded. The full analysis and explanation of my process is <a href="http://mattlichti.github.io/kiva-funding/">here</a></p>
 
 <h2 id="motivation">
 <a class="anchor" href="#motivation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Motivation:</h2>
 
-<p>This project is an analysis of what features make microfinance loans on kiva.org more likely to get funded. There are over 2 million small time lenders on kiva who have funded over 880,000 microfinance loans totaling $712 million since 2005. The loans are originally made by 296 different microfinance organizations in 85 countries who use kiva to raise money to backfill some of their loans. Lenders can view the loans on the website and lend as little as $25 to any of the borrowers they chose.</p>
+<p>This project is an analysis of what features make microfinance loans on <a href="kiva.org">kiva.org</a> more likely to get funded. There are over 2 million small time lenders on kiva who have funded over 880,000 microfinance loans totaling $712 million since 2005. The loans are originally made by 296 different microfinance organizations in 85 countries who use kiva to raise money to backfill some of their loans. Lenders can view the loans on the website and lend as little as $25 to any of the borrowers they chose.</p>
 
 <p>Since January 2012, kiva has usually had a 30 day expiration policy. If a loan is not fully funded in that time, the lenders are refunded and the microfinance organization does not receive any money. This is similar to the funding model used on kickstarter where projects do not receive any money unless they are fully funded. Because of the risk of loan expiration, it is important for the microfinance organizations to understand the characteristics that make loans more likely to get funded. The analysis could also help kiva.org increase the total number of loans getting funded, which would help more struggling entrepreneurs around the globe get the capital they need to build their businesses</p>
 
@@ -142,6 +145,29 @@ window.onload = wrap_img;
 <a class="anchor" href="#feature-engineering" aria-hidden="true"><span class="octicon octicon-link"></span></a>Feature Engineering:</h2>
 
 <p>The most important part of the process is feature engineering. The features include anything that a potential borrower sees when viewing a loan on kiva org that they can use to decide whether or not to loan to a particular individual. A typical view of a loan from the kiva website is pictured below with some of the important features highlighted.</p>
+
+<p><img src="%22https://github.com/mattlichti/kiva-fundraising-success/blob/master/img/feature_engineering.jpg?raw=true%22" alt="Feature Engineering"></p>
+
+<h3 id="continuous-features">
+<a class="anchor" href="#continuous-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Continuous features</h3>
+<ul>
+  <li>loan amount</li>
+  <li>repayment term (anywhere from 4 months to several years)</li>
+  <li>group size (loans can be for 1 person or a group of people)</li>
+</ul>
+
+<h3 id="categorical-features">
+<a class="anchor" href="#categorical-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Categorical features</h3>
+<ul>
+  <li>gender</li>
+  <li>country - currently 84 countries</li>
+  <li>sector - 15 categories like transportation or agriculture</li>
+  <li>activity - 150 categories like “rickshaw” or “cattle”</li>
+  <li>repayment interval - loans payments can be monthly, lump sum at the end, or irregular</li>
+  <li>themes - searchable attributes like “green”, “fair trade”, “conflict zones”, etc.</li>
+  <li>currency loss - whether the lender is liable for losses due to currency fluctuations</li>
+  <li>anonymous - whether the borrower has their name and photo on the website or chooses to remain anonymous.</li>
+</ul>
 
 <h2 id="modeling">
 <a class="anchor" href="#modeling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Modeling:</h2>

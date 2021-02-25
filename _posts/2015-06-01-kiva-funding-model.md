@@ -6,10 +6,7 @@ categories: [markdown]
 title: How to get loans funded on kiva
 ---
 
-
-# [How to get loans funded on kiva](http://mattlichti.github.io/kiva-funding/)
-
-This post was originally written in 2015 and was reformatted for my fastpages blog in 2021. The full analysis and explanation of my process is [here](http://mattlichti.github.io/kiva-funding/)
+This post was originally written in 2015 and was reformatted for my fastpages blog in 2021. 
 
 ![Title Slide](https://github.com/mattlichti/kiva-fundraising-success/blob/master/img/title.jpg?raw=true) 
 
@@ -54,6 +51,9 @@ I used the one sentence description of how the loan will be used to engineer fea
 ### Competing loans
 In addition to the features that impact demand for particular loans, the supply of loans on the site can effect the chances of each loan getting funded. I used SQL to calculate the number of other loans on kiva at the time each loan was posted by comparing the timestamp of when each loan was posted to the timestamps for when other loans were posted and funded or expired.
 
+![Competing Loans](https://github.com/mattlichti/kiva-fundraising-success/blob/master/plots/competing_loans.png?raw=true)
+
+When there are few loans on the site, almost all of the loans get funded. When there is more competition, lenders have more options each loan has a higher chance of expiring. In the future, it might be useful to look at the total value of the loans currently fundraising and how far along they are in their fundraising, not just the number of loans. It might also be useful to look at attributes of those loans. For example, if there are a lot of loans currently fundraising from the same country or economic sector as the loan being posted, it may lower the chance of that loan getting funded.
 
 ## Modeling:
 [build_model.py](https://github.com/mattlichti/kiva-fundraising-success/blob/master/build_model.py) is used to train the model, predict which loans have a higher risk of expiring, and determine which features are most important in predicting loan success. The model converts the categorical features into boolean dummy variables, and tokenizes, lemmatizes, and performs TF-IDF on the text. I used a random forest model. The classes were unbalanced with a much higher number of funded loans than expired loans, so I heavily weighted the expired loans in order to increase recall of expired loans at the expense of precision. The model can output a confusion matrix and a list of feature importance which could be used as recommendations on how to improve their odds of getting their loans funded.  

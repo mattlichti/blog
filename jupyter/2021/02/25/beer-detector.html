@@ -117,8 +117,9 @@ window.onload = wrap_img;
 
   <div class="post-content e-content" itemprop="articleBody">
     <ul class="section-nav">
-<li class="toc-entry toc-h2"><a href="#Downloading-Images-from-Bing-with-Azure-API">Downloading Images from Bing with Azure API </a></li>
-<li class="toc-entry toc-h2"><a href="#From-Data-to-DataLoaders">From Data to DataLoaders </a>
+<li class="toc-entry toc-h2"><a href="#App-Description">App Description </a></li>
+<li class="toc-entry toc-h2"><a href="#Collecting-Data">Collecting Data </a></li>
+<li class="toc-entry toc-h2"><a href="#Loading-the-data-into-a-fastai-datablock">Loading the data into a fastai datablock </a>
 <ul>
 <li class="toc-entry toc-h3"><a href="#Data-Augmentation">Data Augmentation </a></li>
 </ul>
@@ -143,7 +144,18 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I built an app to recognize 12 kinds of beer using fastai. This is project is based on chapter 2 of Jeremy Howard's <a href="https://www.oreilly.com/library/view/deep-learning-for/9781492045519/">Deep Learning book</a> and lesson 2 of the <a href="https://course.fast.ai/">Deep Learning course v4</a>. The app is now running on heroku and works best on mobile phones. I'm using the free heroku service so it can take 30 seconds or so to load.</p>
+<h2 id="App-Description">
+<a class="anchor" href="#App-Description" aria-hidden="true"><span class="octicon octicon-link"></span></a>App Description<a class="anchor-link" href="#App-Description"> </a>
+</h2>
+<p>I built <a href="http://beer-classfier.herokuapp.com/">a computer vision app</a> to recognize 12 kinds of beer using fastai. This is project is based on chapter 2 of Jeremy Howard's <a href="https://www.oreilly.com/library/view/deep-learning-for/9781492045519/">Deep Learning book</a> and lesson 2 of the <a href="https://course.fast.ai/">Deep Learning course v4</a>.</p>
+<p><figure>
+  
+    <img class="docimage" src="/blog/images/copied_from_nb/ghtop_images/trex.png" alt="drawing">
+    
+    
+</figure>
+</p>
+<p><a href="(http://beer-classfier.herokuapp.com/">The app</a>) is now running on heroku and works best on mobile phones. I'm using the free heroku service so it can take 30 seconds or so to load.</p>
 
 </div>
 </div>
@@ -169,9 +181,11 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Downloading-Images-from-Bing-with-Azure-API">
-<a class="anchor" href="#Downloading-Images-from-Bing-with-Azure-API" aria-hidden="true"><span class="octicon octicon-link"></span></a>Downloading Images from Bing with Azure API<a class="anchor-link" href="#Downloading-Images-from-Bing-with-Azure-API"> </a>
+<h2 id="Collecting-Data">
+<a class="anchor" href="#Collecting-Data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Collecting Data<a class="anchor-link" href="#Collecting-Data"> </a>
 </h2>
+<p>The first step is downloading Images from Bing with Azure API. I signed up for a Microsoft Azure account to get an API key to search Bing.</p>
+
 </div>
 </div>
 </div>
@@ -193,6 +207,14 @@ window.onload = wrap_img;
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I picked 12 beers for my app to recognize</p>
+
+</div>
+</div>
+</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -200,35 +222,7 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">azure.cognitiveservices.search.imagesearch</span> <span class="kn">import</span> <span class="n">ImageSearchClient</span> <span class="k">as</span> <span class="n">api</span>
-<span class="kn">from</span> <span class="nn">msrest.authentication</span> <span class="kn">import</span> <span class="n">CognitiveServicesCredentials</span> <span class="k">as</span> <span class="n">auth</span>
-
-<span class="k">def</span> <span class="nf">search_images_bing</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">min_sz</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">max_images</span><span class="o">=</span><span class="mi">150</span><span class="p">):</span>    
-     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'q'</span><span class="p">:</span><span class="n">term</span><span class="p">,</span> <span class="s1">'count'</span><span class="p">:</span><span class="n">max_images</span><span class="p">,</span> <span class="s1">'min_height'</span><span class="p">:</span><span class="n">min_sz</span><span class="p">,</span> <span class="s1">'min_width'</span><span class="p">:</span><span class="n">min_sz</span><span class="p">}</span>
-     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"Ocp-Apim-Subscription-Key"</span><span class="p">:</span><span class="n">key</span><span class="p">}</span>
-     <span class="n">search_url</span> <span class="o">=</span> <span class="s2">"https://api.bing.microsoft.com/v7.0/images/search"</span>
-     <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">search_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-     <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
-     <span class="n">search_results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>    
-     <span class="k">return</span> <span class="n">L</span><span class="p">(</span><span class="n">search_results</span><span class="p">[</span><span class="s1">'value'</span><span class="p">])</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    
-
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">'beers'</span><span class="p">)</span>
-<span class="n">beer_types</span> <span class="o">=</span> <span class="s1">'toppling goliath pompeii'</span><span class="p">,</span><span class="s1">'toppling goliath pseudo sue'</span><span class="p">,</span><span class="s1">'surly furious'</span><span class="p">,</span> \
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">beer_types</span> <span class="o">=</span> <span class="s1">'toppling goliath pompeii'</span><span class="p">,</span><span class="s1">'toppling goliath pseudo sue'</span><span class="p">,</span><span class="s1">'surly furious'</span><span class="p">,</span> \
     <span class="s1">'busch light'</span><span class="p">,</span> <span class="s1">'bells two hearted'</span><span class="p">,</span> <span class="s1">'toppling goliath king sue'</span><span class="p">,</span> \
     <span class="s1">'founders kentucky breakfast stout'</span><span class="p">,</span> <span class="s1">'unibroue la fin du monde'</span><span class="p">,</span> <span class="s1">'bells hopslam'</span><span class="p">,</span> \
     <span class="s1">'dogfish head 60 minute ipa'</span><span class="p">,</span> <span class="s1">'founders solid gold'</span><span class="p">,</span> <span class="s1">'founders all day ipa'</span>
@@ -241,6 +235,14 @@ window.onload = wrap_img;
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I looped through the 12 beers and used fastai's search_images_bing function to download 150</p>
+
+</div>
+</div>
+</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -248,7 +250,8 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s1">'beers'</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
     <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">beer_types</span><span class="p">:</span>
         <span class="n">dest</span> <span class="o">=</span> <span class="p">(</span><span class="n">path</span><span class="o">/</span><span class="n">o</span><span class="p">)</span>
@@ -304,47 +307,8 @@ window.onload = wrap_img;
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># path = Path('beers')</span>
-<span class="c1"># beer_types = 'unibroue la fin du monde', 'bells hopslam', 'dogfish head 60 minute ipa', \</span>
-<span class="c1">#         'founders solid gold', 'founders all day ipa'</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    
-
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#     dest = (path/o)</span>
-<span class="c1">#     dest.mkdir(exist_ok=True)</span>
-<span class="c1">#     results = search_images_bing(key, f'{o} beer')</span>
-<span class="c1">#     download_images(dest, urls=results.attrgot('contentUrl'))</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    
-
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">fns</span> <span class="o">=</span> <span class="n">get_image_files</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-<span class="c1"># fns</span>
+<span class="n">fns</span>
 </pre></div>
 
     </div>
@@ -408,8 +372,8 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="From-Data-to-DataLoaders">
-<a class="anchor" href="#From-Data-to-DataLoaders" aria-hidden="true"><span class="octicon octicon-link"></span></a>From Data to DataLoaders<a class="anchor-link" href="#From-Data-to-DataLoaders"> </a>
+<h2 id="Loading-the-data-into-a-fastai-datablock">
+<a class="anchor" href="#Loading-the-data-into-a-fastai-datablock" aria-hidden="true"><span class="octicon octicon-link"></span></a>Loading the data into a fastai datablock<a class="anchor-link" href="#Loading-the-data-into-a-fastai-datablock"> </a>
 </h2>
 </div>
 </div>

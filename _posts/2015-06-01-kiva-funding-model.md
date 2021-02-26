@@ -78,4 +78,5 @@ The model will still be somewhat biased since the test sets were from the same t
 
 ## Results
 ![Feature Importance](https://github.com/mattlichti/kiva-fundraising-success/blob/master/plots/feature_importance.png?raw=true)
+
 Lenders on kiva show a strong preference for loans with a shorter repayment term as well as loans to women. Loans for larger amounts of money are not surprisingly more difficult to fund since they require more lenders to fully fund. Lenders also prefer lending to certain countries, especially African countries and countries with fewer loans available on kiva. Loans to countries with lots of loans available like El Salvador (SV) and Colombia (CO) are at greater risk for loan expiration. Lenders also have strong preferences for different loan uses with loans for personal housing much more likely to expire than loans for education or starting a business.

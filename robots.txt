@@ -1,1 +1,1 @@
-Sitemap: https://mattlichti.com/sitemap.xml
+Sitemap: http://mattlichti.com/sitemap.xml
